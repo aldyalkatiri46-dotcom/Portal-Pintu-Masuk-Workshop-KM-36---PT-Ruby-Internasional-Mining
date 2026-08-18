@@ -185,12 +185,47 @@
 </head>
 <body>
 
-<div class="container my-4">
+<div id="loginSection" class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="row w-100 justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card p-4 shadow-lg border-0">
+                <div class="text-center mb-4">
+                    <div class="fs-1 d-inline-block p-3 rounded-4 shadow-sm mb-3" style="background: linear-gradient(135deg, #f97316, #c2410c); color: #fff;">
+                        <i class="fa-solid fa-hard-hat"></i>
+                    </div>
+                    <h3 class="fw-bold" data-i18n="loginTitle">Login Portal Workshop</h3>
+                    <p class="text-muted small" data-i18n="loginSubtitle">PT Ruby Internasional Mining - KM 36</p>
+                </div>
+
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold small" data-i18n="lblUsername">Username / ID Karyawan</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-warning text-dark border-0"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" class="form-control" id="loginUser" required placeholder="Masukkan username..." data-i18n-placeholder="phUsername">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold small" data-i18n="lblPassword">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-warning text-dark border-0"><i class="fa-solid fa-lock"></i></span>
+                            <input type="password" class="form-control" id="loginPass" required placeholder="Masukkan password..." data-i18n-placeholder="phPassword">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-hse-gold w-100 py-2.5 rounded-pill shadow-sm mb-2"><i class="fa-solid fa-right-to-bracket me-2"></i> <span data-i18n="btnLogin">Masuk Portal</span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mainAppSection" class="container my-4 d-none">
     <div class="card p-4 mb-4">
         <div class="row align-items-center">
-            <div class="col-md-8">
+            <div class="col-md-7">
                 <div class="d-flex align-items-center">
-                    <div class="fs-1 me-3 p-3 rounded-4 shadow-sm" style="background: linear-gradient(135deg, #f97316, #c2410c); color: #fff; transition: transform 0.3s ease;" onmouseover="this.style.transform='rotate(10deg) scale(1.05)'" onmouseout="this.style.transform='rotate(0deg) scale(1)'">
+                    <div class="fs-1 me-3 p-3 rounded-4 shadow-sm" style="background: linear-gradient(135deg, #f97316, #c2410c); color: #fff;">
                         <i class="fa-solid fa-hard-hat"></i>
                     </div>
                     <div>
@@ -200,10 +235,43 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <div class="col-md-5 text-md-end mt-3 mt-md-0">
                 <div class="p-2.5 border rounded-3 d-inline-block text-start section-box shadow-sm">
-                    <small class="d-block text-muted mb-1"><i class="fa-solid fa-circle-dot text-success me-1"></i> <span data-i18n="systemStatusLabel">Sistem Status:</span></small>
-                    <span class="fw-bold text-success small"><i class="fa-solid fa-database me-1"></i> <span data-i18n="systemStatusValue">Lokal Storage Aktif</span></span>
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <small class="text-muted"><i class="fa-solid fa-user-shield text-warning me-1"></i> <span data-i18n="loggedAs">Login Sebagai:</span> <strong id="currentRoleBadge" class="text-hse-gold">USER</strong></small>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="fw-bold small" id="currentUsernameText">karyawan</span>
+                        <button class="btn btn-outline-danger btn-sm py-0 px-2 ms-2" onclick="handleLogout()" title="Keluar Akun"><i class="fa-solid fa-power-off me-1"></i> <span data-i18n="btnLogout">Keluar</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminTrafficPanel" class="row g-3 mb-4 d-none">
+        <div class="col-12">
+            <div class="card p-3 shadow-sm border-start border-4 border-warning">
+                <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-line text-hse-gold me-2"></i><span data-i18n="trafficHeader">Monitoring Trafik Unit Workshop</span></h5>
+                <div class="row g-3 text-center">
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 section-box shadow-sm">
+                            <small class="text-muted d-block mb-1" data-i18n="statTotalIn">Total Unit Masuk</small>
+                            <h3 class="fw-bold text-warning mb-0" id="statTotalCount">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 section-box shadow-sm">
+                            <small class="text-muted d-block mb-1" data-i18n="statInWorkshop">Unit Sedang di Dalam Bengkel</small>
+                            <h3 class="fw-bold text-primary mb-0" id="statActiveCount">0</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-3 rounded-3 section-box shadow-sm">
+                            <small class="text-muted d-block mb-1" data-i18n="statExitWorkshop">Unit Sudah Keluar Bengkel</small>
+                            <h3 class="fw-bold text-success mb-0" id="statExitCount">0</h3>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -212,7 +280,7 @@
     <div class="card p-4 mb-4 shadow-sm">
         <div class="card-header-hse mb-3">
             <h4 class="mb-0 fw-bold"><i class="fa-solid fa-truck-ramp-box text-hse-gold me-2"></i><span id="formTitleText" data-i18n="formHeaderTitle">Form Catat Unit Masuk Portal Workshop KM 36</span></h4>
-            <p class="text-muted small mb-0 mt-1" data-i18n="formHeaderDesc">Catat detail unit, operator, dan lokasi bengkel perbaikan saat memasuki area workshop.</p>
+            <p class="text-muted small mb-0 mt-1" data-i18n="formHeaderDesc">Catat detail unit, karyawan, dan lokasi bengkel perbaikan saat memasuki area workshop.</p>
         </div>
         <hr class="text-muted my-3">
 
@@ -253,12 +321,12 @@
                     </select>
                 </div>
                 <div class="col-12 col-md-4">
-                    <label class="form-label fw-semibold small" data-i18n="lblOperator">ID Operator / Driver / Pengantar</label>
+                    <label class="form-label fw-semibold small" data-i18n="lblOperator">ID Operator / Driver / Karyawan</label>
                     <input type="text" class="form-control rounded-3" id="operatorId" required placeholder="Cth: OP-8812 (Nama / ID)" data-i18n-placeholder="phOperator">
                 </div>
 
                 <div class="col-12">
-                    <label class="form-label fw-semibold small"><i class="fa-solid fa-signature text-hse-gold me-1"></i> <span data-i18n="lblSignature">Tanda Tangan Digital Operator / Pengantar</span> <span class="text-danger fw-bold" data-i18n="lblSigNote">(Tinta Hitam Terang & Tebal)</span></label>
+                    <label class="form-label fw-semibold small"><i class="fa-solid fa-signature text-hse-gold me-1"></i> <span data-i18n="lblSignature">Tanda Tangan Digital Karyawan / Pengantar</span> <span class="text-danger fw-bold" data-i18n="lblSigNote">(Tinta Hitam Terang & Tebal)</span></label>
                     <div class="sig-container">
                         <canvas id="sigCanvas"></canvas>
                     </div>
@@ -309,7 +377,7 @@
                         <th width="7%" data-i18n="thUnit">No Unit</th>
                         <th width="12%" data-i18n="thRepair">Jenis Perbaikan</th>
                         <th width="11%" data-i18n="thWorkshop">Lokasi Bengkel</th>
-                        <th width="8%" data-i18n="thOperator">ID Operator</th>
+                        <th width="8%" data-i18n="thOperator">ID Karyawan</th>
                         <th width="8%" data-i18n="thSig">Tanda Tangan</th>
                         <th width="7%" data-i18n="thTimeOut">Jam Keluar</th>
                         <th width="9%" data-i18n="thTimeOutAction">Update Keluar</th>
@@ -341,7 +409,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content card border-0 shadow-lg">
             <div class="modal-header border-bottom">
-                <h5 class="modal-title fw-bold"><i class="fa-solid fa-signature text-hse-gold me-2"></i><span data-i18n="modalSigTitle">Tanda Tangan Digital Operator</span></h5>
+                <h5 class="modal-title fw-bold"><i class="fa-solid fa-signature text-hse-gold me-2"></i><span data-i18n="modalSigTitle">Tanda Tangan Digital Karyawan</span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center py-4">
@@ -360,13 +428,24 @@
     const translations = {
         id: {
             pageTitle: "Portal Pintu Masuk Workshop KM 36 - PT Ruby Internasional Mining",
+            loginTitle: "Login Portal Workshop",
+            loginSubtitle: "PT Ruby Internasional Mining - KM 36",
+            lblUsername: "Username Karyawan / Admin",
+            phUsername: "Masukkan username...",
+            lblPassword: "Password",
+            phPassword: "Masukkan password...",
+            btnLogin: "Masuk Portal",
+            loggedAs: "Login Sebagai:",
+            btnLogout: "Keluar",
+            trafficHeader: "Monitoring Trafik Unit Workshop",
+            statTotalIn: "Total Unit Masuk",
+            statInWorkshop: "Unit Sedang di Dalam Bengkel",
+            statExitWorkshop: "Unit Sudah Keluar Bengkel",
             badgePortal: "PORTAL WORKSHOP KM 36",
             mainTitle: "Sistem Pencatatan Unit Masuk & Keluar",
             subTitle: "PT Ruby Internasional Mining - Logistik & Manajemen Perawatan Alat",
-            systemStatusLabel: "Sistem Status:",
-            systemStatusValue: "Lokal Storage Aktif",
             formHeaderTitle: "Form Catat Unit Masuk Portal Workshop KM 36",
-            formHeaderDesc: "Catat detail unit, operator, dan lokasi bengkel perbaikan saat memasuki area workshop.",
+            formHeaderDesc: "Catat detail unit, karyawan, dan lokasi bengkel perbaikan saat memasuki area workshop.",
             formHeaderEditTitle: "Form Edit Data Unit Portal Workshop KM 36",
             lblDate: "Hari & Tanggal Masuk",
             lblTimeIn: "Jam Masuk (Portal)",
@@ -384,9 +463,9 @@
             optElec: "Elektrik",
             optWeld: "Welder",
             optTyre: "Ban",
-            lblOperator: "ID Operator / Driver / Pengantar",
+            lblOperator: "ID Operator / Driver / Karyawan",
             phOperator: "Cth: OP-8812 (Nama / ID)",
-            lblSignature: "Tanda Tangan Digital Operator / Pengantar",
+            lblSignature: "Tanda Tangan Digital Karyawan / Pengantar",
             lblSigNote: "(Tinta Hitam Terang & Tebal)",
             sigInstructions: "Tulis tanda tangan di atas menggunakan mouse atau sentuhan jari pada layar HP.",
             btnClearSig: "Bersihkan Tanda Tangan",
@@ -406,29 +485,41 @@
             thUnit: "No Unit",
             thRepair: "Jenis Perbaikan",
             thWorkshop: "Lokasi Bengkel",
-            thOperator: "ID Operator",
+            thOperator: "ID Karyawan",
             thSig: "Tanda Tangan",
             thTimeOut: "Jam Keluar",
             thTimeOutAction: "Update Keluar",
             thAction: "Aksi Edit / Hapus",
             emptyTableMsg: "Memuat data portal masuk workshop KM 36...",
-            modalSigTitle: "Tanda Tangan Digital Operator",
+            modalSigTitle: "Tanda Tangan Digital Karyawan",
             btnRecordExit: "Catat Keluar",
-            alertNoSig: "Harap isi tanda tangan digital operator terlebih dahulu!",
+            alertNoSig: "Harap isi tanda tangan digital karyawan terlebih dahulu!",
             alertSuccessAdd: "Data unit masuk portal berhasil dicatat!",
             alertSuccessEdit: "Data unit berhasil diperbarui!",
             alertDeleteConfirm: "Apakah Anda yakin ingin menghapus data unit ini?",
-            alertNoData: "Tidak ada data untuk diunduh!"
+            alertNoData: "Tidak ada data untuk diunduh!",
+            alertLoginFail: "Username atau password salah! Silakan periksa kembali."
         },
         cn: {
             pageTitle: "第36公里车间入口门户系统 - 红宝石国际矿业",
+            loginTitle: "车间门户登录",
+            loginSubtitle: "红宝石国际矿业 - 第36公里",
+            lblUsername: "员工 / 管理员用户名",
+            phUsername: "请输入用户名...",
+            lblPassword: "密码",
+            phPassword: "请输入密码...",
+            btnLogin: "登入门户",
+            loggedAs: "当前身份:",
+            btnLogout: "退出",
+            trafficHeader: "车间设备进出流量监控",
+            statTotalIn: "进场设备总数",
+            statInWorkshop: "车间在修设备数",
+            statExitWorkshop: "已离场设备数",
             badgePortal: "第36公里车间门户",
             mainTitle: "设备进出记录系统",
             subTitle: "红宝石国际矿业 - 物流与设备维护管理",
-            systemStatusLabel: "系统状态:",
-            systemStatusValue: "本地存储已激活",
             formHeaderTitle: "第36公里车间入口设备登记表",
-            formHeaderDesc: "进入车间区域时，请记录设备详细信息、操作员及维修车间位置。",
+            formHeaderDesc: "进入车间区域时，请记录设备详细信息、员工及维修车间位置。",
             formHeaderEditTitle: "编辑第36公里车间设备登记数据",
             lblDate: "进入日期",
             lblTimeIn: "进入时间 (门户)",
@@ -446,9 +537,9 @@
             optElec: "电气组 (Elektrik)",
             optWeld: "电焊工 (Welder)",
             optTyre: "轮胎组 (Ban)",
-            lblOperator: "操作员 / 司机 / 送货人 ID",
+            lblOperator: "操作员 / 司机 / 员工 ID",
             phOperator: "例如: OP-8812 (姓名 / ID)",
-            lblSignature: "操作员 / 送货人数字签名",
+            lblSignature: "员工 / 送货人数字签名",
             lblSigNote: "(粗黑墨水)",
             sigInstructions: "请使用鼠标或在手机屏幕上用手指手写签名。",
             btnClearSig: "清除签名",
@@ -468,23 +559,25 @@
             thUnit: "设备编号",
             thRepair: "维修类型",
             thWorkshop: "车间位置",
-            thOperator: "操作员ID",
+            thOperator: "员工ID",
             thSig: "签名",
             thTimeOut: "离场时间",
             thTimeOutAction: "更新离场",
             thAction: "编辑 / 删除操作",
             emptyTableMsg: "正在加载第36公里车间进场数据...",
-            modalSigTitle: "操作员数字签名",
+            modalSigTitle: "员工数字签名",
             btnRecordExit: "记录离场",
-            alertNoSig: "请先填写操作员数字签名！",
+            alertNoSig: "请先填写员工数字签名！",
             alertSuccessAdd: "设备入场记录成功！",
             alertSuccessEdit: "设备数据更新成功！",
             alertDeleteConfirm: "您确定要删除此设备记录吗？",
-            alertNoData: "没有可下载的数据！"
+            alertNoData: "没有可下载的数据！",
+            alertLoginFail: "用户名或密码错误！请检查后重试。"
         }
     };
 
     let currentLang = 'id';
+    let currentUser = null;
 
     function toggleLanguage() {
         currentLang = currentLang === 'id' ? 'cn' : 'id';
@@ -513,17 +606,15 @@
         }
     }
 
-    // Fungsi Kamus Cerdas untuk Menerjemahkan Teks Manual Jenis Perbaikan / Kendala ke Bahasa China
+    // Kamus Terjemahan Teks Manual Jenis Perbaikan / Kendala ke Bahasa China
     function translateRepairTextToCN(text) {
         if (!text) return "";
         const lower = text.trim().toLowerCase();
         
-        // Kamus padanan kata umum di pertambangan / workshop
         const mapping = {
             "retarder": "缓速器 (Retarder)",
             "overhaul engine": "发动机大修 (Overhaul Engine)",
             "ganti ban": "更换轮胎 (Ganti Ban)",
-            "ganti ban / tyre change": "更换轮胎",
             "transmisi": "变速箱 (Transmisi)",
             "sistem hidrolik": "液压系统 (Sistem Hidrolik)",
             "hidrolik": "液压系统",
@@ -531,24 +622,16 @@
             "ac": "空调系统 (AC)",
             "lampu": "车灯 (Lampu)",
             "servis berkala": "定期保养 (Servis Berkala)",
-            "brakes": "制动系统 (Brake)",
-            "rem": "制动系统 (Brake)",
-            "suspensi": "悬挂系统 (Suspensi)",
-            "steering": "转向系统 (Steering)"
+            "rem": "制动系统 (Brake)"
         };
 
-        // Jika ada di kamus persis
         if (mapping[lower]) return mapping[lower];
-
-        // Jika mengandung kata tertentu
         if (lower.includes("retarder")) return text.replace(/retarder/gi, "缓速器");
         if (lower.includes("engine") || lower.includes("mesin")) return text.replace(/engine|mesin/gi, "发动机");
         if (lower.includes("ban") || lower.includes("tyre") || lower.includes("tire")) return text.replace(/ban|tyre|tire/gi, "轮胎");
         if (lower.includes("transmisi") || lower.includes("transmission")) return text.replace(/transmisi|transmission/gi, "变速箱");
         if (lower.includes("hidrolik") || lower.includes("hydraulic")) return text.replace(/hidrolik|hydraulic/gi, "液压");
-        if (lower.includes("brakes") || lower.includes("rem")) return text.replace(/brakes|rem/gi, "制动/刹车");
 
-        // Default jika tidak ada di kamus, kembalikan teks asli ditambah tanda kurung atau tetap
         return text;
     }
 </script>
@@ -558,6 +641,53 @@
     let canvas, ctx, isDrawing = false;
 
     document.addEventListener("DOMContentLoaded", () => {
+        const savedSession = sessionStorage.getItem('portal_session');
+        if (savedSession) {
+            currentUser = JSON.parse(savedSession);
+            showMainApp();
+        }
+    });
+
+    function handleLogin(e) {
+        e.preventDefault();
+        const user = document.getElementById('loginUser').value.trim();
+        const pass = document.getElementById('loginPass').value.trim();
+        const dict = translations[currentLang];
+
+        if (user === 'admin' && pass === 'admin123') {
+            currentUser = { username: 'Administrator', role: 'admin' };
+        } else if (user === 'karyawan' && pass === 'karyawan123') {
+            currentUser = { username: 'Karyawan Workshop', role: 'user' };
+        } else {
+            alert(dict.alertLoginFail);
+            return;
+        }
+
+        sessionStorage.setItem('portal_session', JSON.stringify(currentUser));
+        showMainApp();
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem('portal_session');
+        currentUser = null;
+        document.getElementById('mainAppSection').classList.add('d-none');
+        document.getElementById('loginSection').classList.remove('d-none');
+        document.getElementById('loginForm').reset();
+    }
+
+    function showMainApp() {
+        document.getElementById('loginSection').classList.add('d-none');
+        document.getElementById('mainAppSection').classList.remove('d-none');
+
+        document.getElementById('currentUsernameText').innerText = currentUser.username;
+        document.getElementById('currentRoleBadge').innerText = currentUser.role.toUpperCase();
+
+        if (currentUser.role === 'admin') {
+            document.getElementById('adminTrafficPanel').classList.remove('d-none');
+        } else {
+            document.getElementById('adminTrafficPanel').classList.add('d-none');
+        }
+
         const today = new Date().toISOString().split('T')[0];
         document.getElementById('entryDate').value = today;
 
@@ -568,7 +698,7 @@
 
         initCanvas();
         loadLocalData();
-    });
+    }
 
     function initCanvas() {
         canvas = document.getElementById('sigCanvas');
@@ -637,10 +767,27 @@
             portalDataArray = [];
         }
         renderTable();
+        updateTrafficStats();
     }
 
     function saveLocalData() {
         localStorage.setItem('portal_workshop_km36_data', JSON.stringify(portalDataArray));
+        updateTrafficStats();
+    }
+
+    function updateTrafficStats() {
+        const total = portalDataArray.length;
+        let active = 0;
+        let exit = 0;
+
+        portalDataArray.forEach(item => {
+            if (item.exitTime === '-') active++;
+            else exit++;
+        });
+
+        document.getElementById('statTotalCount').innerText = total;
+        document.getElementById('statActiveCount').innerText = active;
+        document.getElementById('statExitCount').innerText = exit;
     }
 
     document.getElementById('portalForm').addEventListener('submit', function(e) {
@@ -779,7 +926,6 @@
                 exitCellContent = `<span class="badge bg-success px-2 py-1"><i class="fa-solid fa-clock me-1"></i> ${item.exitTime}</span>`;
             }
 
-            // Terjemahan Jenis Perbaikan otomatis ke Bahasa China jika mode CN aktif
             let displayRepairType = item.repairType;
             if (currentLang === 'cn') {
                 displayRepairType = translateRepairTextToCN(item.repairType);
@@ -846,7 +992,7 @@
             "Nomor Unit": item.unitNumber,
             "Jenis Perbaikan": item.repairType,
             "Lokasi Bengkel": item.workshopLocation,
-            "ID Operator": item.operatorId,
+            "ID Karyawan": item.operatorId,
             "Jam Keluar": item.exitTime
         }));
 
@@ -870,7 +1016,7 @@
         doc.setTextColor(44, 62, 80);
         doc.text("PT RUBY INTERNASIONAL MINING - LAPORAN PORTAL WORKSHOP KM 36", 14, 15);
 
-        const headers = [["No", "Tanggal", "Jam Masuk", "Tim Divisi", "No Unit", "Jenis Perbaikan", "Lokasi Bengkel", "ID Operator", "Jam Keluar"]];
+        const headers = [["No", "Tanggal", "Jam Masuk", "Tim Divisi", "No Unit", "Jenis Perbaikan", "Lokasi Bengkel", "ID Karyawan", "Jam Keluar"]];
         const data = portalDataArray.map((item, idx) => [
             idx + 1,
             item.entryDate,
